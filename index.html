@@ -64,13 +64,21 @@
 
   /* 段の選択：3×3で固定 */
   .dan-buttons {
-    width: 300px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
+  width: min(92vw, 600px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
 
+ .dan {
+  min-width: 0;
+  width: 100%;
+  font-size: 22px;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+ 
   .order-buttons {
     display: flex;
     justify-content: center;
