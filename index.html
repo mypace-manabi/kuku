@@ -375,6 +375,51 @@
       height: 56px;
     }
   }
+.answer-list-title {
+  display: inline-block;
+  margin: 18px 0 10px;
+  padding: 6px 18px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #2563eb;
+  background: #eff6ff;
+  border-radius: 999px;
+}
+
+.answer-list {
+  width: min(92vw, 520px);
+  margin: 0 auto 8px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.answer-item {
+  padding: 10px 8px;
+  border-radius: 14px;
+  font-size: 20px;
+  font-weight: bold;
+  background: white;
+  border: 3px solid #e5e7eb;
+}
+
+.answer-item.correct {
+  border-color: #86efac;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.answer-item.wrong {
+  border-color: #fca5a5;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.mark {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 24px;
+}
 </style>
 </head>
 
@@ -466,7 +511,10 @@
     <div class="result-sub" id="resultSubText">
       よくがんばりました！
     </div>
-
+    
+    <div class="answer-list-title">正誤表</div>
+    <div class="answer-list" id="answerList"></div>
+    
     <button class="start-button" id="retryButton">もういちど</button>
     <br>
     <button class="back-button" id="backButton">設定にもどる</button>
@@ -493,6 +541,7 @@
   const messageText = document.getElementById("messageText");
   const finalScoreText = document.getElementById("finalScoreText");
   const resultSubText = document.getElementById("resultSubText");
+  const answerList = document.getElementById("answerList");
 
   const keys = document.querySelectorAll(".key");
 
@@ -500,6 +549,7 @@
   let selectedOrder = "up";
 
   let problems = [];
+  let results = [];
   let currentIndex = 0;
   let score = 0;
   let input = "";
@@ -564,15 +614,16 @@
   }
 
   function startPractice() {
-    makeProblems();
+  makeProblems();
 
-    currentIndex = 0;
-    score = 0;
-    input = "";
-    isChecking = false;
+  currentIndex = 0;
+  score = 0;
+  results = [];
+  input = "";
+  isChecking = false;
 
-    showPage(practicePage);
-    showProblem();
+  showPage(practicePage);
+  showProblem();
   }
 
   function showProblem() {
@@ -624,69 +675,101 @@
   }
 
   function checkInput() {
-    const problem = problems[currentIndex];
-    const correctAnswer = String(problem.answer);
+  const problem = problems[currentIndex];
+  const correctAnswer = String(problem.answer);
 
-    if (input === correctAnswer) {
-      score++;
+  // 正解の場合
+  if (input === correctAnswer) {
+    score++;
 
-      scoreText.textContent = `正解 ${score}問`;
-      answerText.classList.add("correct");
+    results.push({
+      left: problem.left,
+      right: problem.right,
+      answer: problem.answer,
+      userAnswer: input,
+      isCorrect: true
+    });
 
-      messageText.textContent = "正解！";
-      messageText.className = "result-message correct-message";
+    scoreText.textContent = `正解 ${score}問`;
+    answerText.classList.add("correct");
 
-      isChecking = true;
+    messageText.textContent = "正解！";
+    messageText.className = "result-message correct-message";
 
-      setTimeout(() => {
-        currentIndex++;
+    goNextProblem();
 
-        if (currentIndex >= problems.length) {
-          finishPractice();
-        } else {
-          isChecking = false;
-          showProblem();
-        }
-      }, 520);
-
-      return;
-    }
-
-    if (input.length >= correctAnswer.length && input !== correctAnswer) {
-      answerText.classList.add("wrong");
-
-      messageText.textContent = "もう一度！";
-      messageText.className = "result-message wrong-message";
-
-      isChecking = true;
-
-      setTimeout(() => {
-        input = "";
-        answerText.textContent = "";
-        answerText.classList.remove("wrong");
-        messageText.textContent = "";
-        messageText.className = "result-message";
-        isChecking = false;
-      }, 650);
-    }
+    return;
   }
 
-  function finishPractice() {
-    progressFill.style.width = "100%";
+  // 答えの桁数まで入力して、違っていたら不正解として次へ
+  if (input.length >= correctAnswer.length && input !== correctAnswer) {
+    results.push({
+      left: problem.left,
+      right: problem.right,
+      answer: problem.answer,
+      userAnswer: input,
+      isCorrect: false
+    });
 
-    finalScoreText.innerHTML =
-      `${problems.length}問中 <span class="score-number">${score}</span>問 正解！`;
+    answerText.classList.add("wrong");
 
-    if (score === problems.length) {
-      resultSubText.textContent = "すばらしい！ぜんぶ正解！";
-    } else if (score >= 7) {
-      resultSubText.textContent = "よくがんばりました！";
+    messageText.textContent = "ざんねん！";
+    messageText.className = "result-message wrong-message";
+
+    goNextProblem();
+  }
+}
+
+ function goNextProblem() {
+  isChecking = true;
+
+  setTimeout(() => {
+    currentIndex++;
+
+    if (currentIndex >= problems.length) {
+      finishPractice();
     } else {
-      resultSubText.textContent = "もう一度チャレンジしよう！";
+      isChecking = false;
+      showProblem();
     }
+  }, 650);
+}
 
-    showPage(resultPage);
+  function renderAnswerList() {
+  answerList.innerHTML = "";
+
+  results.forEach(result => {
+    const item = document.createElement("div");
+    item.className =
+      "answer-item " + (result.isCorrect ? "correct" : "wrong");
+
+    const mark = result.isCorrect ? "○" : "×";
+
+    item.innerHTML =
+      `${result.left}×${result.right}=${result.answer}<span class="mark">${mark}</span>`;
+
+    answerList.appendChild(item);
+  });
+}
+ 
+  function finishPractice() {
+  progressFill.style.width = "100%";
+
+  finalScoreText.innerHTML =
+    `${problems.length}問中 <span class="score-number">${score}</span>問 正解！`;
+
+  if (score === problems.length) {
+    resultSubText.textContent = "すばらしい！ぜんぶ正解！";
+  } else if (score >= 7) {
+    resultSubText.textContent = "よくがんばりました！";
+  } else {
+    resultSubText.textContent = "もう一度チャレンジしよう！";
   }
+
+  renderAnswerList();
+
+  showPage(resultPage);
+}
 
   keys.forEach(button => {
     button.addEventListener("click", () => {
