@@ -506,7 +506,7 @@
     <h1 class="result-title"><ruby>結果<rt>けっか</rt></ruby></h1>
 
     <div class="result-score" id="finalScoreText">
-      9<ruby>問中<rt>もんちゅう</rt></ruby> <span class="score-number">9</span><ruby>問<rt>もん</rt></rt></ruby><ruby>正解<rt>せいかい</rt></ruby>！
+     <span class="score-number">9</span>問正解！
     </div>
 
     <div class="result-sub" id="resultSubText">
@@ -760,7 +760,7 @@
     `${problems.length}問中 <span class="score-number">${score}</span>問 正解！`;
 
   if (score === problems.length) {
-    resultSubText.textContent = "ぜんぶ<ruby>正解<rt>せいかい</rt></ruby>！すばらしい！";
+    resultSubText.textContent = "ぜんぶ正解！すばらしい！";
   } else if (score >= 7) {
     resultSubText.textContent = "よくできました！";
   } else {
