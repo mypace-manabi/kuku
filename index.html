@@ -460,7 +460,7 @@
   <div class="practice-card">
     <div class="status">
       <div id="progressText">1 / 9</div>
-      <div id="scoreText">正解 0問</div>
+      <div id="scoreText"><ruby>正解<rt>せいかい</rt></ruby> 0<ruby>問<rt>もん</rt></ruby></div>
     </div>
 
     <div class="progress-bar">
@@ -503,22 +503,22 @@
     <div class="confetti c4">🎊</div>
     <div class="confetti c5">✨</div>
 
-    <h1 class="result-title">おつかれさま！</h1>
+    <h1 class="result-title"><ruby>結果<rt>けっか</rt></ruby></h1>
 
     <div class="result-score" id="finalScoreText">
-      9問中 <span class="score-number">9</span>問 正解！
+      9<ruby>問中<rt>もんちゅう</rt></ruby> <span class="score-number">9</span><ruby>問<rt>もん</rt></rt></ruby><ruby>正解<rt>せいかい</rt></ruby>！
     </div>
 
     <div class="result-sub" id="resultSubText">
       よくがんばりました！
     </div>
     
-    <div class="answer-list-title">正誤表</div>
+    <div class="answer-list-title">かくにん</div>
     <div class="answer-list" id="answerList"></div>
     
     <button class="start-button" id="retryButton">もういちど</button>
     <br>
-    <button class="back-button" id="backButton">設定にもどる</button>
+    <button class="back-button" id="backButton">もどる</button>
   </div>
 </div>
 
@@ -760,11 +760,11 @@
     `${problems.length}問中 <span class="score-number">${score}</span>問 正解！`;
 
   if (score === problems.length) {
-    resultSubText.textContent = "すばらしい！ぜんぶ正解！";
+    resultSubText.textContent = "ぜんぶ<ruby>正解<rt>せいかい</rt></ruby>！すばらしい！";
   } else if (score >= 7) {
-    resultSubText.textContent = "よくがんばりました！";
+    resultSubText.textContent = "よくできました！";
   } else {
-    resultSubText.textContent = "もう一度チャレンジしよう！";
+    resultSubText.textContent = "もういちどチャレンジ！";
   }
 
   renderAnswerList();
