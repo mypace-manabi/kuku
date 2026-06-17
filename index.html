@@ -757,7 +757,7 @@
   progressFill.style.width = "100%";
 
   finalScoreText.innerHTML =
-    `${problems.length}問中 <span class="score-number">${score}</span>問 正解！`;
+    `${problems.length}<ruby>問中<rt>もんちゅう</rt></ruby> <span class="score-number">${score}</span><ruby>問<rt>もん</rt></ruby><ruby>正解<rt>せいかい</rt></ruby>！`;
 
   if (score === problems.length) {
     resultSubText.innerHTML = "ぜんぶ<ruby>正解<rt>せいかい</rt></ruby>！すばらしい！";
