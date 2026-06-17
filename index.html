@@ -760,7 +760,7 @@
     `${problems.length}問中 <span class="score-number">${score}</span>問 正解！`;
 
   if (score === problems.length) {
-    resultSubText.textContent = "ぜんぶ正解！すばらしい！";
+    resultSubText.innerHTML = "ぜんぶ<ruby>正解<rt>せいかい</rt></ruby>！すばらしい！";
   } else if (score >= 7) {
     resultSubText.textContent = "よくできました！";
   } else {
