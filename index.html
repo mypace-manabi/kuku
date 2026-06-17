@@ -425,6 +425,24 @@
   margin-left: 6px;
   font-size: 24px;
 }
+
+.practice-back-button {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: bold;
+  padding: 10px 28px;
+  border: none;
+  border-radius: 999px;
+  background: #6b7280;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #374151;
+}
+
+.practice-back-button:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #374151;
+}
 </style>
 </head>
 
@@ -492,6 +510,9 @@
     </div>
 
     <div class="result-message" id="messageText"></div>
+    <button class="practice-back-button" id="practiceBackButton">
+  もどる
+</button>
   </div>
 </div>
 
@@ -533,6 +554,7 @@
   const startButton = document.getElementById("startButton");
   const retryButton = document.getElementById("retryButton");
   const backButton = document.getElementById("backButton");
+  const practiceBackButton = document.getElementById("practiceBackButton");
 
   const progressText = document.getElementById("progressText");
   const scoreText = document.getElementById("scoreText");
@@ -784,6 +806,10 @@
 
   backButton.addEventListener("click", () => {
     showPage(startPage);
+  });
+
+  practiceBackButton.addEventListener("click", () => {
+  showPage(startPage);
   });
 </script>
 
