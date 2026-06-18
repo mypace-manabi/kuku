@@ -447,7 +447,8 @@
 </head>
 
 <body>
-
+<audio id="correctSound" src="correct.mp3" preload="auto"></audio>
+<audio id="wrongSound" src="wrong.mp3" preload="auto"></audio>
 <div class="page" id="startPage">
   <div class="card">
     <h1>九九のれんしゅう</h1>
@@ -696,7 +697,17 @@
 
     checkInput();
   }
+   function playCorrectSound() {
+   const sound = document.getElementById("correctSound");
+   sound.currentTime = 0;
+   sound.play();
+ }
 
+  function playWrongSound() {
+    const sound = document.getElementById("wrongSound");
+    sound.currentTime = 0;
+    sound.play();
+  }
   function checkInput() {
   const problem = problems[currentIndex];
   const correctAnswer = String(problem.answer);
@@ -712,6 +723,8 @@
       userAnswer: input,
       isCorrect: true
     });
+
+   playCorrectSound();
 
     scoreText.textContent = `正解 ${score}問`;
     answerText.classList.add("correct");
@@ -733,6 +746,8 @@
       userAnswer: input,
       isCorrect: false
     });
+
+   playWrongSound();
 
     answerText.classList.add("wrong");
 
